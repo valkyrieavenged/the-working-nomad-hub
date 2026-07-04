@@ -308,6 +308,12 @@
             border-radius: var(--radius);
         }
 
+        .rating {
+            color: #fbbf24;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
         footer {
             background-color: var(--primary-dark);
             color: white;
@@ -344,6 +350,8 @@
         <button id="nav-campfire" onclick="switchTab('campfire')">🗣️ Community</button>
         <button id="nav-routes" onclick="switchTab('routes')">🗺️ Routes</button>
         <button id="nav-weather" onclick="switchTab('weather')">🌤️ Weather</button>
+        <button id="nav-accommodations" onclick="switchTab('accommodations')">🏨 Lodging</button>
+        <button id="nav-homeschool" onclick="switchTab('homeschool')">👨‍👩‍👧‍👦 Homeschool</button>
         <button id="nav-budget" onclick="switchTab('budget')">💰 Budget</button>
         <button id="nav-health" onclick="switchTab('health')">🏥 Health</button>
         <button id="nav-resources" onclick="switchTab('resources')">📖 Resources</button>
@@ -641,7 +649,113 @@
             </div>
         </section>
 
-        <!-- MODULE 8.7: BUDGET TRACKER & EXPENSE LOGGER -->
+        <!-- MODULE 8.7: HOTEL & RV PARK LOCATOR -->
+        <section id="sec-accommodations" class="section">
+            <div class="tool-container">
+                <h2>🏨 Hotel & RV Park Locator</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Find rated RV parks, campgrounds, and hotels along your route with amenities, hookups, and traveler reviews.</p>
+                
+                <form id="accommodation-form" onsubmit="handleAccommodationSearch(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="accom-location">City or Region</label>
+                            <input type="text" id="accom-location" placeholder="e.g., Moab, UT" required>
+                        </div>
+                        <div>
+                            <label for="accom-type">Accommodation Type</label>
+                            <select id="accom-type" required>
+                                <option value="all">All Types</option>
+                                <option value="rv-park">RV Park</option>
+                                <option value="campground">Campground</option>
+                                <option value="hotel">Hotel</option>
+                                <option value="blm">BLM Sites</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="accom-date">Check-in Date</label>
+                            <input type="date" id="accom-date" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="max-width: 280px;">Search Accommodations</button>
+                </form>
+
+                <div id="accommodation-results" style="margin-top: 2rem;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Available Accommodations</h3>
+                    <div class="grid" id="accommodation-container">
+                        <div class="card">
+                            <h3>Moab Valley RV Resort</h3>
+                            <div class="rating">⭐⭐⭐⭐⭐ (428 reviews)</div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Full hookups, WiFi, laundry, pull-thru sites. $45/night</p>
+                            <button class="btn" onclick="alert('Booking portal opening...')">Check Availability</button>
+                        </div>
+                        <div class="card">
+                            <h3>Desert Bloom Campground</h3>
+                            <div class="rating">⭐⭐⭐⭐ (312 reviews)</div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Water/Electric hookups, scenic views, 14-day limit. $28/night</p>
+                            <button class="btn" onclick="alert('Booking portal opening...')">Check Availability</button>
+                        </div>
+                        <div class="card">
+                            <h3>Pack Creek BLM Site</h3>
+                            <div class="rating">⭐⭐⭐ (156 reviews)</div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">No hookups, first-come-first-served, FREE. Pit toilets.</p>
+                            <button class="btn" onclick="alert('Directions & info loading...')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 8.8: HOMESCHOOL TRACKER FOR NOMAD PARENTS -->
+        <section id="sec-homeschool" class="section">
+            <div class="tool-container">
+                <h2>👨‍👩‍👧‍👦 Nomad Homeschool Tracker</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Organize curriculum, track lessons, record progress, and manage educational requirements for your traveling family.</p>
+                
+                <form id="homeschool-form" onsubmit="handleHomeschoolSubmission(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="student-name">Student Name</label>
+                            <input type="text" id="student-name" placeholder="e.g., Emma Johnson" required>
+                        </div>
+                        <div>
+                            <label for="student-grade">Grade/Level</label>
+                            <input type="text" id="student-grade" placeholder="e.g., 7th Grade" required>
+                        </div>
+                        <div>
+                            <label for="lesson-date">Lesson Date</label>
+                            <input type="date" id="lesson-date" required>
+                        </div>
+                    </div>
+                    
+                    <label for="subject">Subject</label>
+                    <select id="subject" required>
+                        <option value="">Select Subject</option>
+                        <option value="math">Math</option>
+                        <option value="english">English/Literature</option>
+                        <option value="science">Science</option>
+                        <option value="history">History/Social Studies</option>
+                        <option value="pe">Physical Education</option>
+                        <option value="art">Art/Music</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <label for="lesson-description">Lesson Description & Activities</label>
+                    <textarea id="lesson-description" rows="3" placeholder="What did your student learn today? Include materials used, activities, and outcomes..." required></textarea>
+
+                    <label for="progress-notes">Progress Notes & Observations</label>
+                    <textarea id="progress-notes" rows="2" placeholder="Strengths, areas for improvement, behavior notes..." required></textarea>
+
+                    <button type="submit" class="btn" style="max-width: 280px;">Log Lesson</button>
+                </form>
+
+                <div id="homeschool-records" style="margin-top: 2rem;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Lesson Progress Log</h3>
+                    <div id="homeschool-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 8.9: BUDGET TRACKER & EXPENSE LOGGER -->
         <section id="sec-budget" class="section">
             <div class="tool-container">
                 <h2>💰 Budget Tracker & Expense Logger</h2>
@@ -681,7 +795,7 @@
             </div>
         </section>
 
-        <!-- MODULE 8.8: HEALTH & WELLNESS TRACKER -->
+        <!-- MODULE 8.9: HEALTH & WELLNESS TRACKER -->
         <section id="sec-health" class="section">
             <div class="tool-container">
                 <h2>🏥 Health & Wellness Tracker</h2>
@@ -977,6 +1091,41 @@
             container.innerHTML = `<strong>${escapeHtml(location)} - ${days} Day Forecast</strong><br/>Day 1: Sunny, 75°F<br/>Day 2: Partly Cloudy, 72°F<br/>Day 3: High Winds, 68°F<br/><em>⚠️ Wind Advisory Day 3. Check road conditions.</em>`;
             results.style.display = 'block';
             document.getElementById('weather-form').reset();
+        }
+
+        function handleAccommodationSearch(event) {
+            event.preventDefault();
+            const location = document.getElementById('accom-location').value;
+            const type = document.getElementById('accom-type').value;
+            alert(`Searching for ${type} accommodations in ${location}...`);
+            document.getElementById('accommodation-form').reset();
+        }
+
+        function handleHomeschoolSubmission(event) {
+            event.preventDefault();
+            const studentName = document.getElementById('student-name').value;
+            const studentGrade = document.getElementById('student-grade').value;
+            const lessonDate = document.getElementById('lesson-date').value;
+            const subject = document.getElementById('subject').value;
+            const description = document.getElementById('lesson-description').value;
+            const notes = document.getElementById('progress-notes').value;
+            const container = document.getElementById('homeschool-container');
+
+            const record = document.createElement('div');
+            record.className = 'utility-result-card';
+            record.style.marginBottom = '0.75rem';
+            record.innerHTML = `
+                <strong>${escapeHtml(studentName)} - Grade ${escapeHtml(studentGrade)}</strong><br/>
+                Date: ${lessonDate} | Subject: ${subject.toUpperCase()}<br/>
+                <small><strong>Lesson:</strong> ${escapeHtml(description)}<br/><strong>Progress:</strong> ${escapeHtml(notes)}</small>
+            `;
+            
+            if (container.firstChild) {
+                container.insertBefore(record, container.firstChild);
+            } else {
+                container.appendChild(record);
+            }
+            document.getElementById('homeschool-form').reset();
         }
 
         function handleBudgetSubmission(event) {
