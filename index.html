@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Working Nomad Hub | Seasonal Career & Logistics Dashboard</title>
+    <!-- Stripe Secure Token Verification Library Integration -->
+    <script src="https://stripe.com"></script>
+    <style>
+        /* ==========================================================================
+           MODULE 1 & 2 DESIGN SYSTEM TOKENS & VARIABLES
+           ========================================================================== */
+        :root {
+            --primary: #1e4620;          /* Deep Woodland Pine */
+            --primary-dark: #112a14;     /* Corporate Canopy Slate */
+            --secondary: #8b5a2b;        /* Utility Leather Accent */
+            --success: #2e7d32;          /* Success Action Green */
+            --premium-gold: #b45309;     /* Cedar Timber Gold */
+            --premium-bg: #fefcbf;       /* Paywall Ambient Cream */
+            --background: #f8fafc;       /* Clean Tech Gray */
+            --surface: #ffffff;          /* Pure White */
+            --text-main: #2d3748;        /* Slate Main Text */
+            --text-muted: #64748b;       /* Neutral Muted Text */
+            --border: #cbd5e1;           /* Clean Structural Border */
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --radius: 8px;               /* Standard Crisp Tech Radius */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-bottom: 4px solid var(--secondary);
+            color: white;
+            padding: 3.5rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .auth-status-container {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-end;
+            z-index: 10;
+        }
+
+        .auth-status-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .auth-status-bar button {
+            border: none;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.75rem;
+            transition: transform 0.1s ease, opacity 0.2s ease;
+        }
+
+        .auth-status-bar button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        header h1 {
+            font-size: 2.6rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        header p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        nav {
+            background-color: var(--surface);
+            border-bottom: 2px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            flex-wrap: wrap;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all 0.2s ease;
+        }
+
+        nav button.active, nav button:hover {
+            color: var(--primary);
+            background-color: #f1f5f9;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
+            will-change: opacity, transform;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-container, .tool-container {
+            background-color: var(--surface);
+            padding: 1.75rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--primary-dark);
+        }
+
+        select, input[type="text"], input[type="number"], textarea, input[type="email"] {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--background);
+            font-size: 0.95rem;
+            color: var(--text-main);
+            outline: none;
+            margin-bottom: 1.25rem;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(30, 70, 32, 0.1);
+        }
+
+        .tier-selector-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-option {
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .tier-option.selected {
+            border-color: var(--primary);
+            background-color: #f0fdf4;
+        }
+
+        .tier-option.selected.premium-choice {
+            border-color: var(--premium-gold);
+            background-color: #fffbeb;
+        }
+
+        .tier-option input[type="radio"] {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            accent-color: var(--premium-gold);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .card.premium-featured {
+            border: 2px solid var(--premium-gold);
+            background-color: #fffdf9;
+            box-shadow: 0 8px 16px -3px rgba(180, 83, 9, 0.12);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 4px;
+            margin-bottom: 0.85rem;
+            width: fit-content;
+        }
+
+        .tag-job { background-color: #f1f5f9; color: var(--primary-dark); border: 1px solid #cbd5e1; }
+        .tag-premium { background-color: var(--premium-bg); color: #78350f; border: 1px solid var(--premium-gold); }
+
+        .price-tag {
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: var(--secondary);
+            margin-bottom: 1.25rem;
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.8rem 1.25rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            width: 100%;
+        }
+
+        .btn:hover { background-color: var(--primary-dark); }
+
+        .paywall-lock-overlay {
+            background: #f8fafc;
+            border: 1px dashed var(--secondary);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+        }
+
+        .blur-text {
+            filter: blur(4px);
+            user-select: none;
+            opacity: 0.5;
+        }
+
+        .utility-result-card, .log-box {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+        }
+
+        .diagnostic-green { color: var(--success); font-weight: bold; }
+        .diagnostic-red { color: #dc2626; font-weight: bold; }
+        .log-row { border-bottom: 1px solid var(--border); padding: 0.5rem 0; font-size: 0.9rem; }
+        .log-row:last-child { border-bottom: none; }
+
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            background: var(--background);
+            padding: 1rem;
+            border-radius: var(--radius);
+<!-- ==========================================================================
+           MODULE 3 & 4: CAREER BOARD, EMPLOYER FORM, AND LIVE SEARCH SUITE
+           ========================================================================== -->
+        <section id="sec-jobs" class="section active">
+            <!-- Employer Job Submission Sub-Panel -->
+            <div class="filter-container" style="border: 2px dashed var(--secondary); background-color: #fffaf5;">
+                <label style="font-weight: 800; font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--secondary);">📣 Property Managers: Publish Your Opening</label>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                    Standard postings are free. Choose a featured option below to highlight your listing and pin it to the absolute top of the index with a verified star.
+                </p>
+                
+                <form id="job-post-form" onsubmit="handleJobSubmission(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="new-job-title">Job Title</label>
+                            <input type="text" id="new-job-title" placeholder="e.g., Camp Host Couple" required>
+                        </div>
+                        <div>
+                            <label for="new-job-location">Location (State/City)</label>
+                            <input type="text" id="new-job-location" placeholder="e.g., Moab, UT" required>
+                        </div>
+                        <div>
+                            <label for="new-job-pay">Compensation Rate</label>
+                            <input type="text" id="new-job-pay" placeholder="e.g., $18.50 / hr + Full Hookups" required>
+                        </div>
+                    </div>
+                    
+                    <label for="new-job-desc">Job Requirements & Site Criteria</label>
+                    <textarea id="new-job-desc" rows="2" placeholder="Describe sewer/power grid limitations, team duties, and contract duration..." required></textarea>
+                    
+                    <!-- Integrated Upgrade Tiers Inside Form Viewport -->
+                    <label style="margin-bottom: 0.5rem;">Select Posting Upgrade Tier</label>
+                    <div class="tier-selector-container">
+                        <div class="tier-option selected" id="opt-standard" onclick="selectPostTier('standard')">
+                            <input type="radio" name="job-tier" value="standard" checked>
+                            <strong style="color: var(--primary-dark);">Standard Listing</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Free placement below premium featured content layers.</p>
+                        </div>
+                        <div class="tier-option premium-choice" id="opt-featured-mo" onclick="selectPostTier('featured-mo')">
+                            <input type="radio" name="job-tier" value="featured-mo">
+                            <strong style="color: var(--premium-gold);">⭐ Featured Monthly</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Highlighted gold border + pinned card placement ($4.99/mo).</p>
+                        </div>
+                        <div class="tier-option premium-choice" id="opt-featured-yr" onclick="selectPostTier('featured-yr')">
+                            <input type="radio" name="job-tier" value="featured-yr">
+                            <strong style="color: var(--premium-gold);">⭐ Featured Annual Pass</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Unlimited highlighted pins all year round ($39.99/yr).</p>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="submit-btn" class="btn" style="background-color: var(--secondary); max-width: 280px;">Publish Standard (Free)</button>
+                </form>
+            </div>
+
+            <!-- Job Seeker Real-Time Search Controls -->
+            <div class="filter-container" style="background-color: var(--surface); display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: end;">
+                <div>
+                    <label for="search-input" style="color: var(--primary-dark); font-weight: bold;">🔍 Search Careers & Properties</label>
+                    <input type="text" id="search-input" onkeyup="filterListings()" placeholder="Filter by keyword, title, state, or hookups..." style="margin-bottom: 0;">
+                </div>
+                <div>
+                    <label for="tier-filter" style="color: var(--primary-dark); font-weight: bold;">⭐ Listing Rank</label>
+                    <select id="tier-filter" onchange="filterListings()" style="margin-bottom: 0;">
+                        <option value="all">Show All Openings</option>
+                        <option value="featured">Featured Openings Only</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Main Job Listings Dynamic Grid Container -->
+            <div class="grid" id="job-listings-container">
+                <!-- Seed Premium Card -->
+                <div class="card premium-featured" data-featured="true">
+                    <div>
+                        <span class="tag tag-premium">⭐ Featured Opening</span>
+                        <h3>National Park Camp Host</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Moab, UT • Seasonal (Fall/Spring)</p>
+                        <p class="job-description">Looking for a dedicated couple or family to manage site check-ins and maintenance. Full 50-amp sewer hookups included.</p>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <div class="price-tag">$18.50 / hr</div>
+                        <button class="btn" onclick="alert('Launching Application Routing Framework...')">Apply Instantly</button>
+                    </div>
+                </div>
+
+                <!-- Seed Standard Card -->
+                <div class="card" data-featured="false">
+                    <div>
+                        <span class="tag tag-job">Standard Listing</span>
+                        <h3>Organic Farm Store Associate</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Skagit Valley, WA • Summer Term</p>
+                        <p class="job-description">Help manage roadside market sales and harvest inventory. On-site dry boondocking parking space permitted.</p>
+                    </div>
+                    <div style="margin-top: 1.5rem;">
+                        <div class="price-tag">$16.25 / hr</div>
+                        <button class="btn" onclick="alert('Launching Application Routing Framework...')">Apply Instantly</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MODULE 5 & 6: SITE CLEARANCE & STRUCTURAL CAT SCALE WEIGHT ANALYZER
+           ========================================================================== -->
+        <section id="sec-clearance" class="section">
+            <div class="tool-container">
+                <h2>📐 Rig Clearance Profile & CAT Scale Matrix</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Save your vehicle profile variables. Our runtime calculator checks dimensions against critical road limits and weight thresholds.</p>
+                
+                <form id="clearance-form" onsubmit="calculateLogisticalClearance(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="rig-height">Rig Height Max (Feet)</label>
+                            <input type="number" id="rig-height" step="0.1" placeholder="e.g., 13.5" required>
+                        </div>
+                        <div>
+                            <label for="rig-length">Total Combined Length (Feet)</label>
+                            <input type="number" id="rig-length" step="1" placeholder="e.g., 45" required>
+                        </div>
+                        <div>
+                            <label for="rig-weight">Gross Scaled Weight (Lbs)</label>
+                            <input type="number" id="rig-weight" step="100" placeholder="e.g., 18500" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="max-width: 280px;">Run Safety Profile Scan</button>
+                </form>
+
+                <!-- Diagnostic Output Box Window -->
+                <div id="clearance-diagnostic-results" style="display:none; margin-top: 1.5rem;" class="utility-result-card">
+                    <h4 style="margin-bottom: 0.75rem; color: var(--primary-dark);">Diagnostic Route Safety Assessment</h4>
+                    <div id="diag-height" class="log-row"></div>
+                    <div id="diag-length" class="log-row"></div>
+                    <div id="diag-weight" class="log-row"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MODULE 7: OFFLINE ROADSCHOOL TRACKER & LEARNING JOURNAL LOGGER
+           ========================================================================== -->
+        <section id="sec-resumes" class="section">
+            <!-- Split Grid: Profile Builder vs Database Index -->
+<!-- ==========================================================================
+           MODULE 9: LIVE AFFILIATE GEAR DEALS (COMMISSION GENERATION SYSTEM)
+           ========================================================================== -->
+        <section id="sec-gear" class="section">
+            <div class="tool-container" style="border: 2px solid var(--premium-gold); background: linear-gradient(180deg, #fffbeb, #ffffff);">
+                <h2 style="color: var(--premium-gold); margin-bottom: 0.25rem;">🛒 Live Nomad & RV Gear Deals</h2>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                    Real-time scoured price drops on essential lifestyle gear. Hardware links contain your custom tracking parameters to yield direct commissions.
+                </p>
+
+                <!-- Category Filters -->
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <button onclick="filterGearMarket('all')" class="btn" style="width:auto; padding:0.4rem 1rem; font-size:0.8rem; background: var(--primary);">All Gear</button>
+                    <button onclick="filterGearMarket('rv-parts')" class="btn" style="width:auto; padding:0.4rem 1rem; font-size:0.8rem; background: var(--secondary);">RV & Solar</button>
+                    <button onclick="filterGearMarket('travel')" class="btn" style="width:auto; padding:0.4rem 1rem; font-size:0.8rem; background: var(--secondary);">Camp & Travel</button>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid" id="gear-market-container">
+                    <!-- JavaScript dynamically injects revenue-generating cards here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+           MODULE 10: SOCIAL CAMPFIRE CHAT WIRE & ANONYMOUS EMPLOYER REVIEWS
+           ========================================================================== -->
+        <section id="sec-campfire" class="section">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                
+                <!-- Chat Interface -->
+                <div class="tool-container" style="margin-bottom: 0;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;">🗣️ Real-Time Campfire Wire</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Coordinate with nearby travelers, share hookup alerts, or request mechanical roadside aid.</p>
+                    
+                    <div class="chat-box" id="global-chat-viewport">
+                        <div class="log-row">💬 <strong>SilverFlier44:</strong> Starlink coverage at Moab BLM spots is running at 150Mbps right now!</div>
+                        <div class="log-row">💬 <strong>SoloRigWarrior:</strong> Anyone near Bozeman got a heavy-duty torque wrench I can borrow for a tire assembly?</div>
+                    </div>
+                    
+                    <form onsubmit="handleChatTransmission(event)" style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="chat-msg-input" placeholder="Broadcast to the caravan..." style="margin-bottom: 0;" required>
+                        <button type="submit" class="btn" style="width: auto; padding: 0.6rem 1.5rem;">Send</button>
+                    </form>
+                </div>
+
+                <!-- Review Feed Interface -->
+                <div class="tool-container" style="margin-bottom: 0;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;">⭐ Employer Critique Board</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Anonymous reviews written by fellow nomads to protect you against bad management practices.</p>
+                    
+                    <div id="reviews-viewport" style="max-height: 230px; overflow-y: auto; margin-bottom: 1rem;">
+                        <div class="utility-result-card" style="margin-top: 0; margin-bottom: 0.75rem; padding: 0.75rem;">
+                            <strong style="color: #dc2626;">❌ Avoid Flagstaff Resort Alpha</strong>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.25rem 0;">Reviewed: May 2026 • Verified Camp Host</p>
+                            <p style="font-size: 0.85rem;">"Management promised full 50-amp power but our voltage dropped past 104V constantly, causing multi-meter failure alerts. Forced uncompensated gate duties."</p>
+                        </div>
+                    </div>
+
+                    <button onclick="triggerReviewSubmissionModal()" class="btn" style="background: var(--secondary);">File Anonymous Employer Review</button>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 The Working Nomad Hub. Built cleanly for low-bandwidth life on the open road.</p>
+    </footer>
+
+    <!-- ==========================================================================
+       THE CORE DASHBOARD LOGIC ENGINE & COMPUTATION RULES
+       ========================================================================== -->
+    <script>
+        // 1. GLOBAL MONETIZATION USER STATES
+        let userTier = 'free'; // 'free', 'monthly', 'annual'
+        let employerTier = 'free'; // 'free', 'monthly', 'annual'
+        let selectedFormPostingTier = 'standard';
+        
+        // Custom Tracker Token String for lifestyle marketplace affiliate commissions
+        const REVENUE_TRACKING_ID = "workingnomadhub-20";
+
+        // Initialize Stripe.js Framework securely
+        const stripe = window.Stripe ? Stripe('pk_live_YOUR_STRIPE_PUBLIC_KEY') : null;
+
+        // Dynamic Tab Navigation System (SPA Engine)
+        type="text/javascript"
+        function switchTab(tabId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            
+            const targetSection = document.getElementById(`sec-${tabId}`);
+            const targetButton = document.getElementById(`nav-${tabId}`);
+            
+            if (targetSection && targetButton) {
+                targetSection.classList.add('active');
+                targetButton.classList.add('active');
+            }
+        }
+
+        // 2. STRIPE CHECKOUT BANK INTEGRATION CONNECTIONS
+        function handleNomadCheckout(tierType) {
+            if (!stripe) {
+                console.log("Stripe API down. Activating simulated sandbox framework checkout wrapper...");
+                userTier = tierType === 'price_nomad_mo' ? 'monthly' : 'annual';
+                document.getElementById('user-tier-badge').innerHTML = `🌲 Nomad Account: PREMIUM ACTIVE`;
+                alert("Simulated Vault Verification Completed: Nomad Premium Tools Unlocked!");
+                return;
+            }
+            // Live Server Tunnel Request
+            fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ priceId: tierType, type: 'nomad' })
+            })
+            .then(res => res.json())
+            .then(session => stripe.redirectToCheckout({ sessionId: session.id }))
+            .catch(err => console.error("Bank redirect interrupted:", err));
+        }
+
+        function handleEmployerCheckout(tierType) {
+            if (!stripe) {
+                employerTier = tierType === 'price_emp_mo' ? 'monthly' : 'annual';
+                document.getElementById('employer-tier-badge').innerHTML = `🏢 Employer Account: VERIFIED HIGHLIGHT TIER`;
+                alert("Simulated Merchant Connection Active: Postings initialized as premium featured elements!");
+                return;
+            }
+            fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ priceId: tierType, type: 'employer' })
+            })
+            .then(res => res.json())
+            .then(session => stripe.redirectToCheckout({ sessionId: session.id }));
+        }
+
+        // 3. EMPLOYER MANAGEMENT FORM AND INTERACTIVE DISPLAY TOKENS
+        function selectPostTier(tierId) {
+            selectedFormPostingTier = tierId;
+            document.querySelectorAll('.tier-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById(`opt-${tierId}`).classList.add('selected');
+            document.getElementById(`opt-${tierId}`).querySelector('input[type="radio"]').checked = true;
+            
+            const submitBtn = document.getElementById('submit-btn');
+            if (tierId !== 'standard') {
+                submitBtn.innerText = tierId === 'featured-mo' ? 'Upgrade & Publish ($4.99)' : 'Upgrade & Publish ($39.99)';
+                submitBtn.style.backgroundColor = 'var(--premium-gold)';
+            } else {
+                submitBtn.innerText = 'Publish Standard (Free)';
+                submitBtn.style.backgroundColor = 'var(--secondary)';
+            }
+        }
+
+        function handleJobSubmission(event) {
+            event.preventDefault();
+            const title = document.getElementById('new-job-title').value;
+            const loc = document.getElementById('new-job-location').value;
+            const pay = document.getElementById('new-job-pay').value;
+            const desc = document.getElementById('new-job-desc').value;
+            const container = document.getElementById('job-listings-container');
+            
+            const card = document.createElement('div');
+            const isFeatured = selectedFormPostingTier !== 'standard';
+           
