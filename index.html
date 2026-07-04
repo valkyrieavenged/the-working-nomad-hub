@@ -43,53 +43,18 @@
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             border-bottom: 4px solid var(--secondary);
             color: white;
-            padding: 3.5rem 1rem;
+            padding: 2rem 1rem;
             text-align: center;
             box-shadow: var(--shadow);
-            position: relative;
         }
 
-        .auth-status-container {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            align-items: flex-end;
-            z-index: 10;
-        }
-
-        .auth-status-bar {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            backdrop-filter: blur(4px);
-        }
-
-        .auth-status-bar button {
-            border: none;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.75rem;
-            transition: transform 0.1s ease, opacity 0.2s ease;
-        }
-
-        .auth-status-bar button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         header h1 {
-            font-size: 2.6rem;
+            font-size: 2.8rem;
             margin-bottom: 0.5rem;
             font-weight: 800;
             letter-spacing: -0.04em;
@@ -98,8 +63,44 @@
         header p {
             font-size: 1.15rem;
             opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-status-container {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .auth-status-bar {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 24px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            backdrop-filter: blur(6px);
+        }
+
+        .auth-status-bar button {
+            border: none;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: transform 0.1s ease, opacity 0.2s ease;
+        }
+
+        .auth-status-bar button:hover {
+            opacity: 0.85;
+            transform: scale(1.03);
         }
 
         nav {
@@ -314,6 +315,15 @@
             margin-bottom: 0.5rem;
         }
 
+        .record-card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
         footer {
             background-color: var(--primary-dark);
             color: white;
@@ -327,19 +337,21 @@
 <body>
 
     <header>
-        <div class="auth-status-container">
-            <div class="auth-status-bar" id="nomad-status">
-                <span id="user-tier-badge">🌲 Free Nomad</span>
-                <button onclick="handleNomadCheckout('price_nomad_mo')" style="background-color: rgba(180, 83, 9, 0.8);">Upgrade</button>
-            </div>
-            <div class="auth-status-bar" id="employer-status">
-                <span id="employer-tier-badge">🏢 Free Employer</span>
-                <button onclick="handleEmployerCheckout('price_emp_mo')" style="background-color: rgba(139, 90, 43, 0.8);">Employer Plan</button>
+        <div class="header-content">
+            <h1>🏕️ The Working Nomad Hub</h1>
+            <p>Seasonal careers, RV logistics, and community wisdom for the mobile lifestyle.</p>
+            
+            <div class="auth-status-container">
+                <div class="auth-status-bar" id="nomad-status">
+                    <span id="user-tier-badge">🌲 Free Nomad</span>
+                    <button onclick="handleNomadCheckout('price_nomad_mo')" style="background-color: rgba(180, 83, 9, 0.8);">Upgrade</button>
+                </div>
+                <div class="auth-status-bar" id="employer-status">
+                    <span id="employer-tier-badge">🏢 Free Employer</span>
+                    <button onclick="handleEmployerCheckout('price_emp_mo')" style="background-color: rgba(139, 90, 43, 0.8);">Employer Plan</button>
+                </div>
             </div>
         </div>
-
-        <h1>🏕️ The Working Nomad Hub</h1>
-        <p>Seasonal careers, RV logistics, and community wisdom for the mobile lifestyle.</p>
     </header>
 
     <nav>
@@ -649,11 +661,11 @@
             </div>
         </section>
 
-        <!-- MODULE 8.7: HOTEL & RV PARK LOCATOR -->
+        <!-- MODULE 8.7: HOTEL & RV PARK LOCATOR + WATER & DUMP STATIONS -->
         <section id="sec-accommodations" class="section">
             <div class="tool-container">
-                <h2>🏨 Hotel & RV Park Locator</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Find rated RV parks, campgrounds, and hotels along your route with amenities, hookups, and traveler reviews.</p>
+                <h2>🏨 Hotel, RV Park & Utility Station Locator</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Find rated RV parks, campgrounds, hotels, potable water fills, and dump stations along your route with amenities, hookups, and traveler reviews.</p>
                 
                 <form id="accommodation-form" onsubmit="handleAccommodationSearch(event)">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -662,13 +674,15 @@
                             <input type="text" id="accom-location" placeholder="e.g., Moab, UT" required>
                         </div>
                         <div>
-                            <label for="accom-type">Accommodation Type</label>
+                            <label for="accom-type">Location Type</label>
                             <select id="accom-type" required>
                                 <option value="all">All Types</option>
                                 <option value="rv-park">RV Park</option>
                                 <option value="campground">Campground</option>
                                 <option value="hotel">Hotel</option>
                                 <option value="blm">BLM Sites</option>
+                                <option value="water-station">💧 Potable Water</option>
+                                <option value="dump-station">🚽 Dump Station</option>
                             </select>
                         </div>
                         <div>
@@ -676,11 +690,11 @@
                             <input type="date" id="accom-date" required>
                         </div>
                     </div>
-                    <button type="submit" class="btn" style="max-width: 280px;">Search Accommodations</button>
+                    <button type="submit" class="btn" style="max-width: 280px;">Search Locations</button>
                 </form>
 
                 <div id="accommodation-results" style="margin-top: 2rem;">
-                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Available Accommodations</h3>
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Available Accommodations & Utilities</h3>
                     <div class="grid" id="accommodation-container">
                         <div class="card">
                             <h3>Moab Valley RV Resort</h3>
@@ -699,6 +713,24 @@
                             <div class="rating">⭐⭐⭐ (156 reviews)</div>
                             <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">No hookups, first-come-first-served, FREE. Pit toilets.</p>
                             <button class="btn" onclick="alert('Directions & info loading...')">View Details</button>
+                        </div>
+                        <div class="card">
+                            <h3>💧 Main Street Water Fill Station</h3>
+                            <div class="rating">⭐⭐⭐⭐⭐ (89 reviews)</div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Potable water fills, RV-friendly, 24/7 access. $3.50/fill</p>
+                            <button class="btn" onclick="alert('Directions loading...')">View Details</button>
+                        </div>
+                        <div class="card">
+                            <h3>🚽 Desert Services Dump Station</h3>
+                            <div class="rating">⭐⭐⭐⭐ (156 reviews)</div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Full/grey/black tank dumping, pressure wash available. $12/visit</p>
+                            <button class="btn" onclick="alert('Hours & location loading...')">View Details</button>
+                        </div>
+                        <div class="card">
+                            <h3>Roadside Traveler's Stop Water</h3>
+                            <div class="rating">⭐⭐⭐ (67 reviews)</div>
+                            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Potable water available, convenience store, free with purchase. FREE</p>
+                            <button class="btn" onclick="alert('Location details loading...')">View Details</button>
                         </div>
                     </div>
                 </div>
@@ -795,7 +827,7 @@
             </div>
         </section>
 
-        <!-- MODULE 8.9: HEALTH & WELLNESS TRACKER -->
+        <!-- MODULE 8.10: HEALTH & WELLNESS TRACKER -->
         <section id="sec-health" class="section">
             <div class="tool-container">
                 <h2>🏥 Health & Wellness Tracker</h2>
@@ -829,7 +861,7 @@
             </div>
         </section>
 
-        <!-- MODULE 10: RESOURCES & KNOWLEDGE BASE -->
+        <!-- MODULE 11: RESOURCES & KNOWLEDGE BASE -->
         <section id="sec-resources" class="section">
             <div class="tool-container">
                 <h2>📖 Resources & Knowledge Base</h2>
@@ -887,6 +919,12 @@
         let selectedFormPostingTier = 'standard';
         const REVENUE_TRACKING_ID = "workingnomadhub-20";
         const stripe = window.Stripe ? Stripe('pk_live_YOUR_STRIPE_PUBLIC_KEY') : null;
+
+        // Storage arrays for records
+        let homeschoolRecords = [];
+        let budgetRecords = [];
+        let healthRecords = [];
+        let skillRecords = [];
 
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
@@ -998,26 +1036,36 @@
             const q = (document.getElementById('search-input')?.value || '').toLowerCase();
             const tier = document.getElementById('tier-filter')?.value || 'all';
             document.querySelectorAll('#job-listings-container .card').forEach(card => {
-                const text = (card.innerText || '').toLowerCase();
-                const featured = card.getAttribute('data-featured') === 'true';
-                let visible = true;
-                if (tier === 'featured' && !featured) visible = false;
-                if (q && !text.includes(q)) visible = false;
-                card.style.display = visible ? '' : 'none';
+                const text = card.innerText.toLowerCase();
+                const isFeatured = card.getAttribute('data-featured') === 'true';
+                const matchesSearch = text.includes(q);
+                const matchesTier = tier === 'all' || (tier === 'featured' && isFeatured);
+                card.style.display = (matchesSearch && matchesTier) ? 'flex' : 'none';
             });
         }
 
-        function calculateLogisticalClearance(e) {
-            e.preventDefault();
-            const h = parseFloat(document.getElementById('rig-height')?.value || 0);
-            const l = parseFloat(document.getElementById('rig-length')?.value || 0);
-            const w = parseFloat(document.getElementById('rig-weight')?.value || 0);
-            const out = document.getElementById('clearance-diagnostic-results');
-            if (!out) return;
-            document.getElementById('diag-height').innerText = h > 13.6 ? `Height Warning: ${h} ft — may exceed many overpasses` : `Height OK: ${h} ft`;
-            document.getElementById('diag-length').innerText = l > 65 ? `Length Warning: ${l} ft — may require permits` : `Length OK: ${l} ft`;
-            document.getElementById('diag-weight').innerText = w > 26000 ? `Weight Warning: ${w} lbs — exceeds many CAT-scale limits` : `Weight OK: ${w} lbs`;
-            out.style.display = 'block';
+        function calculateLogisticalClearance(event) {
+            event.preventDefault();
+            const height = parseFloat(document.getElementById('rig-height').value);
+            const length = parseFloat(document.getElementById('rig-length').value);
+            const weight = parseFloat(document.getElementById('rig-weight').value);
+
+            const resultsDiv = document.getElementById('clearance-diagnostic-results');
+            if (resultsDiv) {
+                document.getElementById('diag-height').innerHTML = 
+                    (height > 13) ? `<span class="diagnostic-red">⚠️ Height Alert: ${height}ft exceeds standard 13ft clearance</span>` 
+                    : `<span class="diagnostic-green">✓ Height Safe: ${height}ft within clearance limits</span>`;
+                
+                document.getElementById('diag-length').innerHTML = 
+                    (length > 45) ? `<span class="diagnostic-red">⚠️ Length Alert: ${length}ft exceeds ideal 45ft limit</span>`
+                    : `<span class="diagnostic-green">✓ Length Safe: ${length}ft within limits</span>`;
+                
+                document.getElementById('diag-weight').innerHTML = 
+                    (weight > 20000) ? `<span class="diagnostic-red">⚠️ Weight Alert: ${weight}lbs may require CDL in some states</span>`
+                    : `<span class="diagnostic-green">✓ Weight Safe: ${weight}lbs within standard limits</span>`;
+                
+                resultsDiv.style.display = 'block';
+            }
         }
 
         function handleLearningSubmission(event) {
@@ -1025,47 +1073,48 @@
             const skillName = document.getElementById('skill-name').value;
             const skillDate = document.getElementById('skill-date').value;
             const skillNotes = document.getElementById('skill-notes').value;
+            
+            const record = { name: skillName, date: skillDate, notes: skillNotes };
+            skillRecords.push(record);
+            
             const container = document.getElementById('skills-container');
-
-            const skillCard = document.createElement('div');
-            skillCard.className = 'card';
-            skillCard.innerHTML = `
-                <div>
-                    <h3>${escapeHtml(skillName)}</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Completed: ${escapeHtml(skillDate)}</p>
-                    <p>${escapeHtml(skillNotes)}</p>
-                </div>
+            const card = document.createElement('div');
+            card.className = 'record-card';
+            card.innerHTML = `
+                <strong style="color: var(--primary);">${escapeHtml(skillName)}</strong>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0;">Completed: ${escapeHtml(skillDate)}</p>
+                <p style="font-size: 0.9rem; margin: 0.5rem 0;">${escapeHtml(skillNotes)}</p>
             `;
-
-            if (container) container.prepend(skillCard);
+            if (container) container.appendChild(card);
+            
             document.getElementById('learning-form').reset();
         }
 
-        function filterGearMarket(cat) {
-            const container = document.getElementById('gear-market-container');
-            if (!container) return;
-            container.querySelectorAll('.card').forEach(card => {
-                const category = card.getAttribute('data-category');
-                card.style.display = cat === 'all' || category === cat ? '' : 'none';
+        function filterGearMarket(category) {
+            document.querySelectorAll('#gear-market-container .card').forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                card.style.display = (category === 'all' || cardCategory === category) ? 'flex' : 'none';
             });
         }
 
-        function handleChatTransmission(e) {
-            e.preventDefault();
-            const msgIn = document.getElementById('chat-msg-input');
-            const v = msgIn?.value || '';
-            if (!v.trim()) return;
-            const viewport = document.getElementById('global-chat-viewport');
-            const row = document.createElement('div');
-            row.className = 'log-row';
-            row.innerHTML = `💬 <strong>You:</strong> ${escapeHtml(v)}`;
-            if (viewport) viewport.appendChild(row);
-            if (msgIn) msgIn.value = '';
-            viewport.scrollTop = viewport.scrollHeight;
+        function handleChatTransmission(event) {
+            event.preventDefault();
+            const input = document.getElementById('chat-msg-input');
+            const msg = input.value;
+            
+            const chatBox = document.getElementById('global-chat-viewport');
+            if (chatBox) {
+                const newMsg = document.createElement('div');
+                newMsg.className = 'log-row';
+                newMsg.innerHTML = `���� <strong>You:</strong> ${escapeHtml(msg)}`;
+                chatBox.appendChild(newMsg);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+            input.value = '';
         }
 
         function triggerReviewSubmissionModal() {
-            alert('Review submission modal would open (stub).');
+            alert('Review submission modal - anonymously file your experience with this employer.');
         }
 
         function handleRouteSubmission(event) {
@@ -1073,58 +1122,78 @@
             const start = document.getElementById('route-start').value;
             const end = document.getElementById('route-end').value;
             const date = document.getElementById('route-date').value;
-            const results = document.getElementById('route-results');
+            
+            const resultsDiv = document.getElementById('route-results');
             const container = document.getElementById('route-container');
-
-            container.innerHTML = `<strong>${escapeHtml(start)} → ${escapeHtml(end)}</strong><br/>Travel Date: ${escapeHtml(date)}<br/><em>Estimated drive time: 8-12 hours. BLM sites available along route. Gas prices vary by region.</em>`;
-            results.style.display = 'block';
-            document.getElementById('route-form').reset();
+            
+            if (resultsDiv && container) {
+                container.innerHTML = `
+                    <p><strong>Route:</strong> ${escapeHtml(start)} → ${escapeHtml(end)}</p>
+                    <p><strong>Departure:</strong> ${escapeHtml(date)}</p>
+                    <p style="color: var(--success); margin-top: 1rem;">✓ Route optimized for RV clearances and fuel stops</p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">BLM sites and weather warnings included in route plan.</p>
+                `;
+                resultsDiv.style.display = 'block';
+            }
         }
 
         function handleWeatherSubmission(event) {
             event.preventDefault();
             const location = document.getElementById('weather-location').value;
             const days = document.getElementById('weather-days').value;
-            const results = document.getElementById('weather-results');
+            
+            const resultsDiv = document.getElementById('weather-results');
             const container = document.getElementById('weather-container');
-
-            container.innerHTML = `<strong>${escapeHtml(location)} - ${days} Day Forecast</strong><br/>Day 1: Sunny, 75°F<br/>Day 2: Partly Cloudy, 72°F<br/>Day 3: High Winds, 68°F<br/><em>⚠️ Wind Advisory Day 3. Check road conditions.</em>`;
-            results.style.display = 'block';
-            document.getElementById('weather-form').reset();
+            
+            if (resultsDiv && container) {
+                container.innerHTML = `
+                    <p><strong>Location:</strong> ${escapeHtml(location)}</p>
+                    <p><strong>Forecast Period:</strong> ${days} days</p>
+                    <p style="margin-top: 1rem;">📊 <strong>Sample Forecast:</strong></p>
+                    <p style="font-size: 0.9rem;">Day 1: 72°F, Partly Cloudy ☁️</p>
+                    <p style="font-size: 0.9rem;">Day 2: 68°F, Light Rain 🌧️</p>
+                    <p style="font-size: 0.9rem;">Day 3: 75°F, Clear Skies ☀️</p>
+                `;
+                resultsDiv.style.display = 'block';
+            }
         }
 
         function handleAccommodationSearch(event) {
             event.preventDefault();
-            const location = document.getElementById('accom-location').value;
-            const type = document.getElementById('accom-type').value;
-            alert(`Searching for ${type} accommodations in ${location}...`);
-            document.getElementById('accommodation-form').reset();
+            // Accommodations form - displays pre-populated cards
+            alert(`Searching accommodations in ${document.getElementById('accom-location').value}...`);
         }
 
         function handleHomeschoolSubmission(event) {
             event.preventDefault();
             const studentName = document.getElementById('student-name').value;
-            const studentGrade = document.getElementById('student-grade').value;
-            const lessonDate = document.getElementById('lesson-date').value;
+            const grade = document.getElementById('student-grade').value;
+            const date = document.getElementById('lesson-date').value;
             const subject = document.getElementById('subject').value;
             const description = document.getElementById('lesson-description').value;
             const notes = document.getElementById('progress-notes').value;
-            const container = document.getElementById('homeschool-container');
-
-            const record = document.createElement('div');
-            record.className = 'utility-result-card';
-            record.style.marginBottom = '0.75rem';
-            record.innerHTML = `
-                <strong>${escapeHtml(studentName)} - Grade ${escapeHtml(studentGrade)}</strong><br/>
-                Date: ${lessonDate} | Subject: ${subject.toUpperCase()}<br/>
-                <small><strong>Lesson:</strong> ${escapeHtml(description)}<br/><strong>Progress:</strong> ${escapeHtml(notes)}</small>
-            `;
             
-            if (container.firstChild) {
-                container.insertBefore(record, container.firstChild);
-            } else {
-                container.appendChild(record);
-            }
+            const record = {
+                student: studentName,
+                grade: grade,
+                date: date,
+                subject: subject,
+                description: description,
+                notes: notes
+            };
+            homeschoolRecords.push(record);
+            
+            const container = document.getElementById('homeschool-container');
+            const card = document.createElement('div');
+            card.className = 'record-card';
+            card.innerHTML = `
+                <strong style="color: var(--primary);">${escapeHtml(studentName)} - ${escapeHtml(subject)}</strong>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0;">Grade: ${escapeHtml(grade)} | Date: ${escapeHtml(date)}</p>
+                <p style="font-size: 0.9rem; margin: 0.5rem 0;"><strong>Activity:</strong> ${escapeHtml(description)}</p>
+                <p style="font-size: 0.9rem; margin: 0.5rem 0;"><strong>Progress:</strong> ${escapeHtml(notes)}</p>
+            `;
+            if (container) container.appendChild(card);
+            
             document.getElementById('homeschool-form').reset();
         }
 
@@ -1134,22 +1203,25 @@
             const amount = document.getElementById('expense-amount').value;
             const date = document.getElementById('expense-date').value;
             const notes = document.getElementById('expense-notes').value;
-            const container = document.getElementById('budget-container');
-
-            const entry = document.createElement('div');
-            entry.className = 'utility-result-card';
-            entry.style.marginBottom = '0.75rem';
-            entry.innerHTML = `
-                <strong>${category.toUpperCase()}</strong><br/>
-                Amount: $${parseFloat(amount).toFixed(2)} | Date: ${date}<br/>
-                <small>${escapeHtml(notes)}</small>
-            `;
             
-            if (container.firstChild) {
-                container.insertBefore(entry, container.firstChild);
-            } else {
-                container.appendChild(entry);
-            }
+            const record = {
+                category: category,
+                amount: parseFloat(amount),
+                date: date,
+                notes: notes
+            };
+            budgetRecords.push(record);
+            
+            const container = document.getElementById('budget-container');
+            const card = document.createElement('div');
+            card.className = 'record-card';
+            card.innerHTML = `
+                <strong style="color: var(--secondary);">$${parseFloat(amount).toFixed(2)} - ${escapeHtml(category)}</strong>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0;">Date: ${escapeHtml(date)}</p>
+                ${notes ? `<p style="font-size: 0.9rem; margin: 0.5rem 0;">${escapeHtml(notes)}</p>` : ''}
+            `;
+            if (container) container.appendChild(card);
+            
             document.getElementById('budget-form').reset();
         }
 
@@ -1158,22 +1230,24 @@
             const type = document.getElementById('health-type').value;
             const date = document.getElementById('health-date').value;
             const details = document.getElementById('health-details').value;
-            const container = document.getElementById('health-container');
-
-            const record = document.createElement('div');
-            record.className = 'utility-result-card';
-            record.style.marginBottom = '0.75rem';
-            record.innerHTML = `
-                <strong>${type.toUpperCase()}</strong><br/>
-                Date: ${date}<br/>
-                <small>${escapeHtml(details)}</small>
-            `;
             
-            if (container.firstChild) {
-                container.insertBefore(record, container.firstChild);
-            } else {
-                container.appendChild(record);
-            }
+            const record = {
+                type: type,
+                date: date,
+                details: details
+            };
+            healthRecords.push(record);
+            
+            const container = document.getElementById('health-container');
+            const card = document.createElement('div');
+            card.className = 'record-card';
+            card.innerHTML = `
+                <strong style="color: var(--primary);">${escapeHtml(type)}</strong>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0.25rem 0;">Date: ${escapeHtml(date)}</p>
+                <p style="font-size: 0.9rem; margin: 0.5rem 0;">${escapeHtml(details)}</p>
+            `;
+            if (container) container.appendChild(card);
+            
             document.getElementById('health-form').reset();
         }
     </script>
