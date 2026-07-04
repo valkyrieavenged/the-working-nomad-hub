@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Working Nomad Hub | Seasonal Career & Logistics Dashboard</title>
     <!-- Stripe Secure Token Verification Library Integration -->
-    <script src="https://stripe.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
         /* ==========================================================================
            MODULE 1 & 2 DESIGN SYSTEM TOKENS & VARIABLES
@@ -319,9 +319,15 @@
             background: var(--background);
             padding: 1rem;
             border-radius: var(--radius);
-<!-- ==========================================================================
-           MODULE 3 & 4: CAREER BOARD, EMPLOYER FORM, AND LIVE SEARCH SUITE
-           ========================================================================== -->
+        }
+    </style>
+    <!-- ==========================================================================
+       MODULE 3 & 4: CAREER BOARD, EMPLOYER FORM, AND LIVE SEARCH SUITE
+       ========================================================================== -->
+</head>
+<body>
+
+    <main>
         <section id="sec-jobs" class="section active">
             <!-- Employer Job Submission Sub-Panel -->
             <div class="filter-container" style="border: 2px dashed var(--secondary); background-color: #fffaf5;">
@@ -426,7 +432,7 @@
         <section id="sec-clearance" class="section">
             <div class="tool-container">
                 <h2>📐 Rig Clearance Profile & CAT Scale Matrix</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Save your vehicle profile variables. Our runtime calculator checks dimensions against critical road limits and weight thresholds.</p>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Save your vehicle profile variables. Our runtime calculator checks dimensions against critical road limits and weight thresh[...]
                 
                 <form id="clearance-form" onsubmit="calculateLogisticalClearance(event)">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -461,7 +467,9 @@
            ========================================================================== -->
         <section id="sec-resumes" class="section">
             <!-- Split Grid: Profile Builder vs Database Index -->
-<!-- ==========================================================================
+        </section>
+
+        <!-- ==========================================================================
            MODULE 9: LIVE AFFILIATE GEAR DEALS (COMMISSION GENERATION SYSTEM)
            ========================================================================== -->
         <section id="sec-gear" class="section">
@@ -516,7 +524,7 @@
                         <div class="utility-result-card" style="margin-top: 0; margin-bottom: 0.75rem; padding: 0.75rem;">
                             <strong style="color: #dc2626;">❌ Avoid Flagstaff Resort Alpha</strong>
                             <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.25rem 0;">Reviewed: May 2026 • Verified Camp Host</p>
-                            <p style="font-size: 0.85rem;">"Management promised full 50-amp power but our voltage dropped past 104V constantly, causing multi-meter failure alerts. Forced uncompensated gate duties."</p>
+                            <p style="font-size: 0.85rem;">"Management promised full 50-amp power but our voltage dropped past 104V constantly, causing multi-compen[...]</p>
                         </div>
                     </div>
 
@@ -547,7 +555,6 @@
         const stripe = window.Stripe ? Stripe('pk_live_YOUR_STRIPE_PUBLIC_KEY') : null;
 
         // Dynamic Tab Navigation System (SPA Engine)
-        type="text/javascript"
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
@@ -566,7 +573,8 @@
             if (!stripe) {
                 console.log("Stripe API down. Activating simulated sandbox framework checkout wrapper...");
                 userTier = tierType === 'price_nomad_mo' ? 'monthly' : 'annual';
-                document.getElementById('user-tier-badge').innerHTML = `🌲 Nomad Account: PREMIUM ACTIVE`;
+                const badge = document.getElementById('user-tier-badge');
+                if (badge) badge.innerHTML = `🌲 Nomad Account: PREMIUM ACTIVE`;
                 alert("Simulated Vault Verification Completed: Nomad Premium Tools Unlocked!");
                 return;
             }
@@ -584,7 +592,8 @@
         function handleEmployerCheckout(tierType) {
             if (!stripe) {
                 employerTier = tierType === 'price_emp_mo' ? 'monthly' : 'annual';
-                document.getElementById('employer-tier-badge').innerHTML = `🏢 Employer Account: VERIFIED HIGHLIGHT TIER`;
+                const badge = document.getElementById('employer-tier-badge');
+                if (badge) badge.innerHTML = `🏢 Employer Account: VERIFIED HIGHLIGHT TIER`;
                 alert("Simulated Merchant Connection Active: Postings initialized as premium featured elements!");
                 return;
             }
@@ -601,16 +610,22 @@
         function selectPostTier(tierId) {
             selectedFormPostingTier = tierId;
             document.querySelectorAll('.tier-option').forEach(opt => opt.classList.remove('selected'));
-            document.getElementById(`opt-${tierId}`).classList.add('selected');
-            document.getElementById(`opt-${tierId}`).querySelector('input[type="radio"]').checked = true;
+            const el = document.getElementById(`opt-${tierId}`);
+            if (el) el.classList.add('selected');
+            if (el) {
+                const radio = el.querySelector('input[type="radio"]');
+                if (radio) radio.checked = true;
+            }
             
             const submitBtn = document.getElementById('submit-btn');
-            if (tierId !== 'standard') {
-                submitBtn.innerText = tierId === 'featured-mo' ? 'Upgrade & Publish ($4.99)' : 'Upgrade & Publish ($39.99)';
-                submitBtn.style.backgroundColor = 'var(--premium-gold)';
-            } else {
-                submitBtn.innerText = 'Publish Standard (Free)';
-                submitBtn.style.backgroundColor = 'var(--secondary)';
+            if (submitBtn) {
+                if (tierId !== 'standard') {
+                    submitBtn.innerText = tierId === 'featured-mo' ? 'Upgrade & Publish ($4.99)' : 'Upgrade & Publish ($39.99)';
+                    submitBtn.style.backgroundColor = 'var(--premium-gold)';
+                } else {
+                    submitBtn.innerText = 'Publish Standard (Free)';
+                    submitBtn.style.backgroundColor = 'var(--secondary)';
+                }
             }
         }
 
@@ -624,4 +639,81 @@
             
             const card = document.createElement('div');
             const isFeatured = selectedFormPostingTier !== 'standard';
-           
+            card.className = 'card' + (isFeatured ? ' premium-featured' : '');
+            card.setAttribute('data-featured', isFeatured ? 'true' : 'false');
+
+            card.innerHTML = `
+                <div>
+                    <span class="tag ${isFeatured ? 'tag-premium' : 'tag-job'}">${isFeatured ? '⭐ Featured Opening' : 'Standard Listing'}</span>
+                    <h3>${escapeHtml(title)}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">${escapeHtml(loc)}</p>
+                    <p class="job-description">${escapeHtml(desc)}</p>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <div class="price-tag">${escapeHtml(pay)}</div>
+                    <button class="btn" onclick="alert('Launching Application Routing Framework...')">Apply Instantly</button>
+                </div>
+            `;
+
+            if (container) container.prepend(card);
+
+            // Reset form
+            document.getElementById('job-post-form').reset();
+            selectPostTier('standard');
+        }
+
+        // small helper to avoid basic HTML injection when inserting user strings
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Placeholder stubs for other functions referenced in the UI so page doesn't error
+        function filterListings() {
+            // very small client-side filter: show/hide based on search input and tier
+            const q = (document.getElementById('search-input')?.value || '').toLowerCase();
+            const tier = document.getElementById('tier-filter')?.value || 'all';
+            document.querySelectorAll('#job-listings-container .card').forEach(card => {
+                const text = (card.innerText || '').toLowerCase();
+                const featured = card.getAttribute('data-featured') === 'true';
+                let visible = true;
+                if (tier === 'featured' && !featured) visible = false;
+                if (q && !text.includes(q)) visible = false;
+                card.style.display = visible ? '' : 'none';
+            });
+        }
+
+        function calculateLogisticalClearance(e) {
+            e.preventDefault();
+            const h = parseFloat(document.getElementById('rig-height')?.value || 0);
+            const l = parseFloat(document.getElementById('rig-length')?.value || 0);
+            const w = parseFloat(document.getElementById('rig-weight')?.value || 0);
+            const out = document.getElementById('clearance-diagnostic-results');
+            if (!out) return;
+            document.getElementById('diag-height').innerText = h > 13.6 ? `Height Warning: ${h} ft — may exceed many overpasses` : `Height OK: ${h} ft`;
+            document.getElementById('diag-length').innerText = l > 65 ? `Length Warning: ${l} ft — may require permits` : `Length OK: ${l} ft`;
+            document.getElementById('diag-weight').innerText = w > 26000 ? `Weight Warning: ${w} lbs — exceeds many CAT-scale limits` : `Weight OK: ${w} lbs`;
+            out.style.display = 'block';
+        }
+
+        function handleChatTransmission(e) {
+            e.preventDefault();
+            const msgIn = document.getElementById('chat-msg-input');
+            const v = msgIn?.value || '';
+            if (!v.trim()) return;
+            const viewport = document.getElementById('global-chat-viewport');
+            const row = document.createElement('div');
+            row.className = 'log-row';
+            row.innerHTML = `💬 <strong>You:</strong> ${escapeHtml(v)}`;
+            if (viewport) viewport.appendChild(row);
+            if (msgIn) msgIn.value = '';
+            viewport.scrollTop = viewport.scrollHeight;
+        }
+
+        function triggerReviewSubmissionModal() {
+            alert('Review submission modal would open (stub).');
+        }
+
+    </script>
+</body>
+</html>
