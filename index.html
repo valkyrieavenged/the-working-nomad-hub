@@ -320,12 +320,45 @@
             padding: 1rem;
             border-radius: var(--radius);
         }
+
+        footer {
+            background-color: var(--primary-dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            border-top: 4px solid var(--secondary);
+        }
     </style>
     <!-- ==========================================================================
        MODULE 3 & 4: CAREER BOARD, EMPLOYER FORM, AND LIVE SEARCH SUITE
        ========================================================================== -->
 </head>
 <body>
+
+    <header>
+        <div class="auth-status-container">
+            <div class="auth-status-bar" id="nomad-status">
+                <span id="user-tier-badge">🌲 Free Nomad</span>
+                <button onclick="handleNomadCheckout('price_nomad_mo')" style="background-color: rgba(180, 83, 9, 0.8);">Upgrade</button>
+            </div>
+            <div class="auth-status-bar" id="employer-status">
+                <span id="employer-tier-badge">🏢 Free Employer</span>
+                <button onclick="handleEmployerCheckout('price_emp_mo')" style="background-color: rgba(139, 90, 43, 0.8);">Employer Plan</button>
+            </div>
+        </div>
+
+        <h1>🏕️ The Working Nomad Hub</h1>
+        <p>Seasonal careers, RV logistics, and community wisdom for the mobile lifestyle.</p>
+    </header>
+
+    <nav>
+        <button id="nav-jobs" class="active" onclick="switchTab('jobs')">📋 Job Board</button>
+        <button id="nav-clearance" onclick="switchTab('clearance')">📐 Clearance & Weight</button>
+        <button id="nav-resumes" onclick="switchTab('resumes')">📚 Learning & Resumes</button>
+        <button id="nav-gear" onclick="switchTab('gear')">🛒 Gear Deals</button>
+        <button id="nav-campfire" onclick="switchTab('campfire')">🗣️ Community</button>
+    </nav>
 
     <main>
         <section id="sec-jobs" class="section active">
@@ -432,7 +465,7 @@
         <section id="sec-clearance" class="section">
             <div class="tool-container">
                 <h2>📐 Rig Clearance Profile & CAT Scale Matrix</h2>
-                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Save your vehicle profile variables. Our runtime calculator checks dimensions against critical road limits and weight thresh[...]
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Save your vehicle profile variables. Our runtime calculator checks dimensions against critical road limits and weight thresholds.</p>
                 
                 <form id="clearance-form" onsubmit="calculateLogisticalClearance(event)">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
@@ -466,7 +499,31 @@
            MODULE 7: OFFLINE ROADSCHOOL TRACKER & LEARNING JOURNAL LOGGER
            ========================================================================== -->
         <section id="sec-resumes" class="section">
-            <!-- Split Grid: Profile Builder vs Database Index -->
+            <div class="tool-container">
+                <h2>📚 Learning Tracker & Resume Builder</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Track your roadschooling progress, certifications, and seasonal skills for your nomad portfolio.</p>
+                
+                <form id="learning-form" onsubmit="handleLearningSubmission(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="skill-name">Skill or Certification</label>
+                            <input type="text" id="skill-name" placeholder="e.g., Diesel Mechanics Certification" required>
+                        </div>
+                        <div>
+                            <label for="skill-date">Completion Date</label>
+                            <input type="text" id="skill-date" placeholder="e.g., June 2026" required>
+                        </div>
+                    </div>
+                    <label for="skill-notes">Learning Notes</label>
+                    <textarea id="skill-notes" rows="3" placeholder="Describe what you learned and how it applies to nomad life..." required></textarea>
+                    <button type="submit" class="btn" style="max-width: 280px;">Add to Portfolio</button>
+                </form>
+
+                <div id="resume-listings" style="margin-top: 2rem;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Your Nomad Portfolio</h3>
+                    <div id="skills-container"></div>
+                </div>
+            </div>
         </section>
 
         <!-- ==========================================================================
@@ -489,6 +546,24 @@
                 <!-- Product Grid -->
                 <div class="grid" id="gear-market-container">
                     <!-- JavaScript dynamically injects revenue-generating cards here -->
+                    <div class="card" data-category="rv-parts">
+                        <h3>100W Solar Panel Bundle</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Perfect for van dwellers and RV owners.</p>
+                        <div class="price-tag">$189.99</div>
+                        <button class="btn" onclick="alert('Affiliate link: Commission tracking enabled')">Shop Now</button>
+                    </div>
+                    <div class="card" data-category="travel">
+                        <h3>Portable Water Filtration System</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Lightweight and compact for any campsite.</p>
+                        <div class="price-tag">$49.99</div>
+                        <button class="btn" onclick="alert('Affiliate link: Commission tracking enabled')">Shop Now</button>
+                    </div>
+                    <div class="card" data-category="rv-parts">
+                        <h3>Lithium Battery 200Ah LiFePO4</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Industrial-grade power storage solution.</p>
+                        <div class="price-tag">$1,299.99</div>
+                        <button class="btn" onclick="alert('Affiliate link: Commission tracking enabled')">Shop Now</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -509,7 +584,7 @@
                         <div class="log-row">💬 <strong>SoloRigWarrior:</strong> Anyone near Bozeman got a heavy-duty torque wrench I can borrow for a tire assembly?</div>
                     </div>
                     
-                    <form onsubmit="handleChatTransmission(event)" style="display: flex; gap: 0.5rem;">
+                    <form onsubmit="handleChatTransmission(event)" style="display: flex; gap: 0.5rem; margin-top: 1rem;">
                         <input type="text" id="chat-msg-input" placeholder="Broadcast to the caravan..." style="margin-bottom: 0;" required>
                         <button type="submit" class="btn" style="width: auto; padding: 0.6rem 1.5rem;">Send</button>
                     </form>
@@ -524,7 +599,7 @@
                         <div class="utility-result-card" style="margin-top: 0; margin-bottom: 0.75rem; padding: 0.75rem;">
                             <strong style="color: #dc2626;">❌ Avoid Flagstaff Resort Alpha</strong>
                             <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0.25rem 0;">Reviewed: May 2026 • Verified Camp Host</p>
-                            <p style="font-size: 0.85rem;">"Management promised full 50-amp power but our voltage dropped past 104V constantly, causing multi-compen[...]</p>
+                            <p style="font-size: 0.85rem;">"Management promised full 50-amp power but our voltage dropped past 104V constantly, causing multi-component failures."</p>
                         </div>
                     </div>
 
@@ -662,6 +737,29 @@
             selectPostTier('standard');
         }
 
+        function handleLearningSubmission(event) {
+            event.preventDefault();
+            const skillName = document.getElementById('skill-name').value;
+            const skillDate = document.getElementById('skill-date').value;
+            const skillNotes = document.getElementById('skill-notes').value;
+            const container = document.getElementById('skills-container');
+
+            const skillCard = document.createElement('div');
+            skillCard.className = 'card';
+            skillCard.innerHTML = `
+                <div>
+                    <h3>${escapeHtml(skillName)}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Completed: ${escapeHtml(skillDate)}</p>
+                    <p>${escapeHtml(skillNotes)}</p>
+                </div>
+            `;
+
+            if (container) container.prepend(skillCard);
+
+            // Reset form
+            document.getElementById('learning-form').reset();
+        }
+
         // small helper to avoid basic HTML injection when inserting user strings
         function escapeHtml(str) {
             if (!str) return '';
@@ -694,6 +792,15 @@
             document.getElementById('diag-length').innerText = l > 65 ? `Length Warning: ${l} ft — may require permits` : `Length OK: ${l} ft`;
             document.getElementById('diag-weight').innerText = w > 26000 ? `Weight Warning: ${w} lbs — exceeds many CAT-scale limits` : `Weight OK: ${w} lbs`;
             out.style.display = 'block';
+        }
+
+        function filterGearMarket(cat) {
+            const container = document.getElementById('gear-market-container');
+            if (!container) return;
+            container.querySelectorAll('.card').forEach(card => {
+                const category = card.getAttribute('data-category');
+                card.style.display = cat === 'all' || category === cat ? '' : 'none';
+            });
         }
 
         function handleChatTransmission(e) {
