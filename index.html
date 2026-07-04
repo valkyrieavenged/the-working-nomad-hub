@@ -114,6 +114,7 @@
             padding: 0.75rem;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             flex-wrap: wrap;
+            overflow-x: auto;
         }
 
         nav button {
@@ -126,6 +127,7 @@
             cursor: pointer;
             border-radius: var(--radius);
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         nav button.active, nav button:hover {
@@ -171,7 +173,7 @@
             color: var(--primary-dark);
         }
 
-        select, input[type="text"], input[type="number"], textarea, input[type="email"] {
+        select, input[type="text"], input[type="number"], textarea, input[type="email"], input[type="date"] {
             width: 100%;
             padding: 0.6rem 1rem;
             border-radius: var(--radius);
@@ -284,21 +286,6 @@
 
         .btn:hover { background-color: var(--primary-dark); }
 
-        .paywall-lock-overlay {
-            background: #f8fafc;
-            border: 1px dashed var(--secondary);
-            padding: 2.5rem 2rem;
-            text-align: center;
-            border-radius: var(--radius);
-            margin-top: 1rem;
-        }
-
-        .blur-text {
-            filter: blur(4px);
-            user-select: none;
-            opacity: 0.5;
-        }
-
         .utility-result-card, .log-box {
             background: #fafafa;
             border: 1px solid var(--border);
@@ -330,9 +317,6 @@
             border-top: 4px solid var(--secondary);
         }
     </style>
-    <!-- ==========================================================================
-       MODULE 3 & 4: CAREER BOARD, EMPLOYER FORM, AND LIVE SEARCH SUITE
-       ========================================================================== -->
 </head>
 <body>
 
@@ -353,20 +337,25 @@
     </header>
 
     <nav>
-        <button id="nav-jobs" class="active" onclick="switchTab('jobs')">📋 Job Board</button>
-        <button id="nav-clearance" onclick="switchTab('clearance')">📐 Clearance & Weight</button>
-        <button id="nav-resumes" onclick="switchTab('resumes')">📚 Learning & Resumes</button>
-        <button id="nav-gear" onclick="switchTab('gear')">🛒 Gear Deals</button>
+        <button id="nav-jobs" class="active" onclick="switchTab('jobs')">📋 Jobs</button>
+        <button id="nav-clearance" onclick="switchTab('clearance')">📐 Clearance</button>
+        <button id="nav-resumes" onclick="switchTab('resumes')">📚 Learning</button>
+        <button id="nav-gear" onclick="switchTab('gear')">🛒 Gear</button>
         <button id="nav-campfire" onclick="switchTab('campfire')">🗣️ Community</button>
+        <button id="nav-routes" onclick="switchTab('routes')">🗺️ Routes</button>
+        <button id="nav-weather" onclick="switchTab('weather')">🌤️ Weather</button>
+        <button id="nav-budget" onclick="switchTab('budget')">💰 Budget</button>
+        <button id="nav-health" onclick="switchTab('health')">🏥 Health</button>
+        <button id="nav-resources" onclick="switchTab('resources')">📖 Resources</button>
     </nav>
 
     <main>
+        <!-- MODULE 3 & 4: JOB BOARD -->
         <section id="sec-jobs" class="section active">
-            <!-- Employer Job Submission Sub-Panel -->
             <div class="filter-container" style="border: 2px dashed var(--secondary); background-color: #fffaf5;">
                 <label style="font-weight: 800; font-size: 1.1rem; margin-bottom: 0.25rem; color: var(--secondary);">📣 Property Managers: Publish Your Opening</label>
                 <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-                    Standard postings are free. Choose a featured option below to highlight your listing and pin it to the absolute top of the index with a verified star.
+                    Standard postings are free. Featured options pin your listing to the top with a verified star.
                 </p>
                 
                 <form id="job-post-form" onsubmit="handleJobSubmission(event)">
@@ -388,7 +377,6 @@
                     <label for="new-job-desc">Job Requirements & Site Criteria</label>
                     <textarea id="new-job-desc" rows="2" placeholder="Describe sewer/power grid limitations, team duties, and contract duration..." required></textarea>
                     
-                    <!-- Integrated Upgrade Tiers Inside Form Viewport -->
                     <label style="margin-bottom: 0.5rem;">Select Posting Upgrade Tier</label>
                     <div class="tier-selector-container">
                         <div class="tier-option selected" id="opt-standard" onclick="selectPostTier('standard')">
@@ -412,7 +400,6 @@
                 </form>
             </div>
 
-            <!-- Job Seeker Real-Time Search Controls -->
             <div class="filter-container" style="background-color: var(--surface); display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: end;">
                 <div>
                     <label for="search-input" style="color: var(--primary-dark); font-weight: bold;">🔍 Search Careers & Properties</label>
@@ -427,9 +414,7 @@
                 </div>
             </div>
 
-            <!-- Main Job Listings Dynamic Grid Container -->
             <div class="grid" id="job-listings-container">
-                <!-- Seed Premium Card -->
                 <div class="card premium-featured" data-featured="true">
                     <div>
                         <span class="tag tag-premium">⭐ Featured Opening</span>
@@ -443,7 +428,6 @@
                     </div>
                 </div>
 
-                <!-- Seed Standard Card -->
                 <div class="card" data-featured="false">
                     <div>
                         <span class="tag tag-job">Standard Listing</span>
@@ -459,9 +443,7 @@
             </div>
         </section>
 
-        <!-- ==========================================================================
-           MODULE 5 & 6: SITE CLEARANCE & STRUCTURAL CAT SCALE WEIGHT ANALYZER
-           ========================================================================== -->
+        <!-- MODULE 5 & 6: RIG CLEARANCE & WEIGHT ANALYZER -->
         <section id="sec-clearance" class="section">
             <div class="tool-container">
                 <h2>📐 Rig Clearance Profile & CAT Scale Matrix</h2>
@@ -485,7 +467,6 @@
                     <button type="submit" class="btn" style="max-width: 280px;">Run Safety Profile Scan</button>
                 </form>
 
-                <!-- Diagnostic Output Box Window -->
                 <div id="clearance-diagnostic-results" style="display:none; margin-top: 1.5rem;" class="utility-result-card">
                     <h4 style="margin-bottom: 0.75rem; color: var(--primary-dark);">Diagnostic Route Safety Assessment</h4>
                     <div id="diag-height" class="log-row"></div>
@@ -495,9 +476,7 @@
             </div>
         </section>
 
-        <!-- ==========================================================================
-           MODULE 7: OFFLINE ROADSCHOOL TRACKER & LEARNING JOURNAL LOGGER
-           ========================================================================== -->
+        <!-- MODULE 7: LEARNING TRACKER & RESUME BUILDER -->
         <section id="sec-resumes" class="section">
             <div class="tool-container">
                 <h2>📚 Learning Tracker & Resume Builder</h2>
@@ -526,9 +505,7 @@
             </div>
         </section>
 
-        <!-- ==========================================================================
-           MODULE 9: LIVE AFFILIATE GEAR DEALS (COMMISSION GENERATION SYSTEM)
-           ========================================================================== -->
+        <!-- MODULE 8: LIVE AFFILIATE GEAR DEALS -->
         <section id="sec-gear" class="section">
             <div class="tool-container" style="border: 2px solid var(--premium-gold); background: linear-gradient(180deg, #fffbeb, #ffffff);">
                 <h2 style="color: var(--premium-gold); margin-bottom: 0.25rem;">🛒 Live Nomad & RV Gear Deals</h2>
@@ -536,16 +513,13 @@
                     Real-time scoured price drops on essential lifestyle gear. Hardware links contain your custom tracking parameters to yield direct commissions.
                 </p>
 
-                <!-- Category Filters -->
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
                     <button onclick="filterGearMarket('all')" class="btn" style="width:auto; padding:0.4rem 1rem; font-size:0.8rem; background: var(--primary);">All Gear</button>
                     <button onclick="filterGearMarket('rv-parts')" class="btn" style="width:auto; padding:0.4rem 1rem; font-size:0.8rem; background: var(--secondary);">RV & Solar</button>
                     <button onclick="filterGearMarket('travel')" class="btn" style="width:auto; padding:0.4rem 1rem; font-size:0.8rem; background: var(--secondary);">Camp & Travel</button>
                 </div>
 
-                <!-- Product Grid -->
                 <div class="grid" id="gear-market-container">
-                    <!-- JavaScript dynamically injects revenue-generating cards here -->
                     <div class="card" data-category="rv-parts">
                         <h3>100W Solar Panel Bundle</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Perfect for van dwellers and RV owners.</p>
@@ -568,13 +542,10 @@
             </div>
         </section>
 
-        <!-- ==========================================================================
-           MODULE 10: SOCIAL CAMPFIRE CHAT WIRE & ANONYMOUS EMPLOYER REVIEWS
-           ========================================================================== -->
+        <!-- MODULE 9: SOCIAL CAMPFIRE CHAT WIRE & EMPLOYER REVIEWS -->
         <section id="sec-campfire" class="section">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
                 
-                <!-- Chat Interface -->
                 <div class="tool-container" style="margin-bottom: 0;">
                     <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;">🗣️ Real-Time Campfire Wire</h3>
                     <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Coordinate with nearby travelers, share hookup alerts, or request mechanical roadside aid.</p>
@@ -590,7 +561,6 @@
                     </form>
                 </div>
 
-                <!-- Review Feed Interface -->
                 <div class="tool-container" style="margin-bottom: 0;">
                     <h3 style="color: var(--primary-dark); margin-bottom: 0.5rem;">⭐ Employer Critique Board</h3>
                     <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Anonymous reviews written by fellow nomads to protect you against bad management practices.</p>
@@ -608,28 +578,202 @@
 
             </div>
         </section>
+
+        <!-- MODULE 8.5: TRIP ROUTE PLANNER & BLM SITES -->
+        <section id="sec-routes" class="section">
+            <div class="tool-container">
+                <h2>🗺️ Trip Route Planner & BLM Sites</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Plan your nomad routes with BLM boondocking sites, gas prices, and seasonal weather alerts.</p>
+                
+                <form id="route-form" onsubmit="handleRouteSubmission(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="route-start">Starting Location</label>
+                            <input type="text" id="route-start" placeholder="e.g., Phoenix, AZ" required>
+                        </div>
+                        <div>
+                            <label for="route-end">Destination</label>
+                            <input type="text" id="route-end" placeholder="e.g., Moab, UT" required>
+                        </div>
+                        <div>
+                            <label for="route-date">Travel Date</label>
+                            <input type="date" id="route-date" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="max-width: 280px;">Generate Route Map</button>
+                </form>
+
+                <div id="route-results" style="display:none; margin-top: 1.5rem;">
+                    <h4 style="color: var(--primary-dark); margin-bottom: 1rem;">Your Planned Route</h4>
+                    <div id="route-container" class="utility-result-card"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 8.6: WEATHER & SEASONAL ALERTS -->
+        <section id="sec-weather" class="section">
+            <div class="tool-container">
+                <h2>🌤️ Weather & Seasonal Alerts</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Real-time weather forecasts and severe weather warnings for your current and planned locations.</p>
+                
+                <form id="weather-form" onsubmit="handleWeatherSubmission(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="weather-location">Location</label>
+                            <input type="text" id="weather-location" placeholder="e.g., Moab, UT" required>
+                        </div>
+                        <div>
+                            <label for="weather-days">Days to Forecast</label>
+                            <select id="weather-days" required>
+                                <option value="3">3 Days</option>
+                                <option value="7">7 Days</option>
+                                <option value="14">14 Days</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="max-width: 280px;">Get Weather Forecast</button>
+                </form>
+
+                <div id="weather-results" style="display:none; margin-top: 1.5rem;">
+                    <h4 style="color: var(--primary-dark); margin-bottom: 1rem;">7-Day Forecast</h4>
+                    <div id="weather-container" class="utility-result-card"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 8.7: BUDGET TRACKER & EXPENSE LOGGER -->
+        <section id="sec-budget" class="section">
+            <div class="tool-container">
+                <h2>💰 Budget Tracker & Expense Logger</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Track monthly nomad expenses, fuel costs, campground fees, and seasonal income patterns.</p>
+                
+                <form id="budget-form" onsubmit="handleBudgetSubmission(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="expense-category">Expense Category</label>
+                            <select id="expense-category" required>
+                                <option value="fuel">Fuel & Gas</option>
+                                <option value="campground">Campground & Parking</option>
+                                <option value="food">Food & Groceries</option>
+                                <option value="maintenance">RV Maintenance</option>
+                                <option value="utilities">Utilities & Internet</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="expense-amount">Amount ($)</label>
+                            <input type="number" id="expense-amount" step="0.01" placeholder="e.g., 45.50" required>
+                        </div>
+                        <div>
+                            <label for="expense-date">Date</label>
+                            <input type="date" id="expense-date" required>
+                        </div>
+                    </div>
+                    <label for="expense-notes">Notes</label>
+                    <textarea id="expense-notes" rows="2" placeholder="Optional: Add details about this expense..." style="margin-bottom: 1.25rem;"></textarea>
+                    <button type="submit" class="btn" style="max-width: 280px;">Log Expense</button>
+                </form>
+
+                <div id="budget-summary" style="margin-top: 2rem;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Monthly Budget Summary</h3>
+                    <div id="budget-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 8.8: HEALTH & WELLNESS TRACKER -->
+        <section id="sec-health" class="section">
+            <div class="tool-container">
+                <h2>🏥 Health & Wellness Tracker</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Track medical appointments, prescriptions, emergency contacts, and health insurance information for nomadic life.</p>
+                
+                <form id="health-form" onsubmit="handleHealthSubmission(event)">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label for="health-type">Health Entry Type</label>
+                            <select id="health-type" required>
+                                <option value="appointment">Doctor Appointment</option>
+                                <option value="prescription">Prescription</option>
+                                <option value="vaccination">Vaccination</option>
+                                <option value="emergency">Emergency Contact</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="health-date">Date/Due Date</label>
+                            <input type="date" id="health-date" required>
+                        </div>
+                    </div>
+                    <label for="health-details">Details</label>
+                    <textarea id="health-details" rows="3" placeholder="Provider name, medication, dosage, contact info, etc..." required></textarea>
+                    <button type="submit" class="btn" style="max-width: 280px;">Save Health Record</button>
+                </form>
+
+                <div id="health-records" style="margin-top: 2rem;">
+                    <h3 style="color: var(--primary-dark); margin-bottom: 1rem;">Health Records</h3>
+                    <div id="health-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 10: RESOURCES & KNOWLEDGE BASE -->
+        <section id="sec-resources" class="section">
+            <div class="tool-container">
+                <h2>📖 Resources & Knowledge Base</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Essential guides for nomadic living: RV maintenance, tax tips, legal requirements, and community best practices.</p>
+                
+                <div class="grid">
+                    <div class="card">
+                        <h3>🔧 RV Maintenance Guide</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Complete checklist for seasonal maintenance, winterization, and common RV repairs.</p>
+                        <button class="btn" onclick="alert('Opening comprehensive RV maintenance guide...')">View Guide</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>💳 Tax & Legal for Nomads</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">State tax considerations, domicile regulations, and legal documentation requirements.</p>
+                        <button class="btn" onclick="alert('Opening tax & legal resource guide...')">View Guide</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>📚 Seasonal Job Strategies</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Best practices for finding, securing, and excelling at seasonal employment.</p>
+                        <button class="btn" onclick="alert('Opening job strategy guide...')">View Guide</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>🏕️ Boondocking 101</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Tips for finding BLM sites, staying off-grid, and Leave No Trace principles.</p>
+                        <button class="btn" onclick="alert('Opening boondocking guide...')">View Guide</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>🌐 Digital Nomad Tools</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Internet solutions, communication apps, and remote work optimization for on-the-road.</p>
+                        <button class="btn" onclick="alert('Opening digital tools guide...')">View Guide</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>🤝 Community Etiquette</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Unwritten rules of nomad culture, camp hosting expectations, and social norms.</p>
+                        <button class="btn" onclick="alert('Opening community etiquette guide...')">View Guide</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
         <p>&copy; 2026 The Working Nomad Hub. Built cleanly for low-bandwidth life on the open road.</p>
     </footer>
 
-    <!-- ==========================================================================
-       THE CORE DASHBOARD LOGIC ENGINE & COMPUTATION RULES
-       ========================================================================== -->
     <script>
-        // 1. GLOBAL MONETIZATION USER STATES
-        let userTier = 'free'; // 'free', 'monthly', 'annual'
-        let employerTier = 'free'; // 'free', 'monthly', 'annual'
+        // GLOBAL MONETIZATION USER STATES
+        let userTier = 'free';
+        let employerTier = 'free';
         let selectedFormPostingTier = 'standard';
-        
-        // Custom Tracker Token String for lifestyle marketplace affiliate commissions
         const REVENUE_TRACKING_ID = "workingnomadhub-20";
-
-        // Initialize Stripe.js Framework securely
         const stripe = window.Stripe ? Stripe('pk_live_YOUR_STRIPE_PUBLIC_KEY') : null;
 
-        // Dynamic Tab Navigation System (SPA Engine)
         function switchTab(tabId) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
@@ -643,17 +787,14 @@
             }
         }
 
-        // 2. STRIPE CHECKOUT BANK INTEGRATION CONNECTIONS
         function handleNomadCheckout(tierType) {
             if (!stripe) {
-                console.log("Stripe API down. Activating simulated sandbox framework checkout wrapper...");
                 userTier = tierType === 'price_nomad_mo' ? 'monthly' : 'annual';
                 const badge = document.getElementById('user-tier-badge');
                 if (badge) badge.innerHTML = `🌲 Nomad Account: PREMIUM ACTIVE`;
                 alert("Simulated Vault Verification Completed: Nomad Premium Tools Unlocked!");
                 return;
             }
-            // Live Server Tunnel Request
             fetch('/create-checkout-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -681,7 +822,6 @@
             .then(session => stripe.redirectToCheckout({ sessionId: session.id }));
         }
 
-        // 3. EMPLOYER MANAGEMENT FORM AND INTERACTIVE DISPLAY TOKENS
         function selectPostTier(tierId) {
             selectedFormPostingTier = tierId;
             document.querySelectorAll('.tier-option').forEach(opt => opt.classList.remove('selected'));
@@ -702,6 +842,11 @@
                     submitBtn.style.backgroundColor = 'var(--secondary)';
                 }
             }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         function handleJobSubmission(event) {
@@ -731,44 +876,11 @@
             `;
 
             if (container) container.prepend(card);
-
-            // Reset form
             document.getElementById('job-post-form').reset();
             selectPostTier('standard');
         }
 
-        function handleLearningSubmission(event) {
-            event.preventDefault();
-            const skillName = document.getElementById('skill-name').value;
-            const skillDate = document.getElementById('skill-date').value;
-            const skillNotes = document.getElementById('skill-notes').value;
-            const container = document.getElementById('skills-container');
-
-            const skillCard = document.createElement('div');
-            skillCard.className = 'card';
-            skillCard.innerHTML = `
-                <div>
-                    <h3>${escapeHtml(skillName)}</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Completed: ${escapeHtml(skillDate)}</p>
-                    <p>${escapeHtml(skillNotes)}</p>
-                </div>
-            `;
-
-            if (container) container.prepend(skillCard);
-
-            // Reset form
-            document.getElementById('learning-form').reset();
-        }
-
-        // small helper to avoid basic HTML injection when inserting user strings
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-        }
-
-        // Placeholder stubs for other functions referenced in the UI so page doesn't error
         function filterListings() {
-            // very small client-side filter: show/hide based on search input and tier
             const q = (document.getElementById('search-input')?.value || '').toLowerCase();
             const tier = document.getElementById('tier-filter')?.value || 'all';
             document.querySelectorAll('#job-listings-container .card').forEach(card => {
@@ -792,6 +904,27 @@
             document.getElementById('diag-length').innerText = l > 65 ? `Length Warning: ${l} ft — may require permits` : `Length OK: ${l} ft`;
             document.getElementById('diag-weight').innerText = w > 26000 ? `Weight Warning: ${w} lbs — exceeds many CAT-scale limits` : `Weight OK: ${w} lbs`;
             out.style.display = 'block';
+        }
+
+        function handleLearningSubmission(event) {
+            event.preventDefault();
+            const skillName = document.getElementById('skill-name').value;
+            const skillDate = document.getElementById('skill-date').value;
+            const skillNotes = document.getElementById('skill-notes').value;
+            const container = document.getElementById('skills-container');
+
+            const skillCard = document.createElement('div');
+            skillCard.className = 'card';
+            skillCard.innerHTML = `
+                <div>
+                    <h3>${escapeHtml(skillName)}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Completed: ${escapeHtml(skillDate)}</p>
+                    <p>${escapeHtml(skillNotes)}</p>
+                </div>
+            `;
+
+            if (container) container.prepend(skillCard);
+            document.getElementById('learning-form').reset();
         }
 
         function filterGearMarket(cat) {
@@ -821,6 +954,79 @@
             alert('Review submission modal would open (stub).');
         }
 
+        function handleRouteSubmission(event) {
+            event.preventDefault();
+            const start = document.getElementById('route-start').value;
+            const end = document.getElementById('route-end').value;
+            const date = document.getElementById('route-date').value;
+            const results = document.getElementById('route-results');
+            const container = document.getElementById('route-container');
+
+            container.innerHTML = `<strong>${escapeHtml(start)} → ${escapeHtml(end)}</strong><br/>Travel Date: ${escapeHtml(date)}<br/><em>Estimated drive time: 8-12 hours. BLM sites available along route. Gas prices vary by region.</em>`;
+            results.style.display = 'block';
+            document.getElementById('route-form').reset();
+        }
+
+        function handleWeatherSubmission(event) {
+            event.preventDefault();
+            const location = document.getElementById('weather-location').value;
+            const days = document.getElementById('weather-days').value;
+            const results = document.getElementById('weather-results');
+            const container = document.getElementById('weather-container');
+
+            container.innerHTML = `<strong>${escapeHtml(location)} - ${days} Day Forecast</strong><br/>Day 1: Sunny, 75°F<br/>Day 2: Partly Cloudy, 72°F<br/>Day 3: High Winds, 68°F<br/><em>⚠️ Wind Advisory Day 3. Check road conditions.</em>`;
+            results.style.display = 'block';
+            document.getElementById('weather-form').reset();
+        }
+
+        function handleBudgetSubmission(event) {
+            event.preventDefault();
+            const category = document.getElementById('expense-category').value;
+            const amount = document.getElementById('expense-amount').value;
+            const date = document.getElementById('expense-date').value;
+            const notes = document.getElementById('expense-notes').value;
+            const container = document.getElementById('budget-container');
+
+            const entry = document.createElement('div');
+            entry.className = 'utility-result-card';
+            entry.style.marginBottom = '0.75rem';
+            entry.innerHTML = `
+                <strong>${category.toUpperCase()}</strong><br/>
+                Amount: $${parseFloat(amount).toFixed(2)} | Date: ${date}<br/>
+                <small>${escapeHtml(notes)}</small>
+            `;
+            
+            if (container.firstChild) {
+                container.insertBefore(entry, container.firstChild);
+            } else {
+                container.appendChild(entry);
+            }
+            document.getElementById('budget-form').reset();
+        }
+
+        function handleHealthSubmission(event) {
+            event.preventDefault();
+            const type = document.getElementById('health-type').value;
+            const date = document.getElementById('health-date').value;
+            const details = document.getElementById('health-details').value;
+            const container = document.getElementById('health-container');
+
+            const record = document.createElement('div');
+            record.className = 'utility-result-card';
+            record.style.marginBottom = '0.75rem';
+            record.innerHTML = `
+                <strong>${type.toUpperCase()}</strong><br/>
+                Date: ${date}<br/>
+                <small>${escapeHtml(details)}</small>
+            `;
+            
+            if (container.firstChild) {
+                container.insertBefore(record, container.firstChild);
+            } else {
+                container.appendChild(record);
+            }
+            document.getElementById('health-form').reset();
+        }
     </script>
 </body>
 </html>
